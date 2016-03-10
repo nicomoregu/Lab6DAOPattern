@@ -48,13 +48,13 @@ El siguiente, es el diagrama de clases de la implementación del patrón DAO par
 |3	| DAOPaciente.save()      | Paciente nuevo que se registra con sólo una consulta      |   Correcta/Frontera |
 |4	| DAOPaciente.save()      | Paciente nuevo YA existente que se registra con más de una consulta     |   Incorrecta/Estándar |
 
-2. A partir de lo revisado en el punto 1, implemente las operaciones faltantes en JDBCDaoPaciente. La siguiente, es la consulta SQL sugerida para obtener todos los pacientes con sus respectivas consultas:
+2. A partir de lo revisado en el punto 1, implemente SÓLO las operaciones save() y load() de JDBCDaoPaciente. La siguiente, es la consulta SQL sugerida para obtener todos los pacientes con sus respectivas consultas:
 
 	```sql
 select pac.nombre, pac.fecha_nacimiento, con.idCONSULTAS, con.fecha_y_hora, con.resumen from PACIENTES as pac inner join CONSULTAS as con on con.PACIENTES_id=pac.id and con.PACIENTES_tipo_id=pac.tipo_id where pac.id=1 and pac.tipo_id='cc'
 ```
 
-3. Haciendo uso de las pruebas, rectifique que la implementación haya sido correcta. Si la prueba de la clase de equivalencia #2 falla, revise el siguiente esquema, e identifique qué está mal con la consulta SQL:
+3. Haciendo uso de las pruebas, rectifique que la implementación haya sido correcta (recuerde ejecutar las pruebas con 'mvn test'). Si la prueba de la clase de equivalencia #2 falla, revise el siguiente esquema, e identifique qué está mal con la consulta SQL:
 
 	![](img/joins.png)
 
