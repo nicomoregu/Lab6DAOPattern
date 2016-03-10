@@ -31,6 +31,8 @@ String pwd="bdprueba";
 
 ###Parte 2. Patrón DAO (Avance antes de terminar la clase y para entregar terminado el Martes).
 
+####Nota: este ejercicio se debe realizar colaborativamente haciendo uso de un repositorio git centralizado tal como github o gitlab.
+
 Para este ejercicio, va a implementar la capa de persistencia para el ejercicio anterior, en el cual se desarrolló una aplicación Web para gestionar las consultas médicas realizadas por los pacientes de un centro médico. El siguiente, es el modelo de base de datos en el que se va a hacer persistente la información registrada a través de la aplicación:
 
 ![](img/PACIENTES_CONSULTAS.png)
