@@ -61,14 +61,19 @@ public class JDBCDaoPaciente implements DaoPaciente {
             ps.setString(2,tipoid);
             ResultSet executeQuery = ps.executeQuery();
             Paciente p=null;
-            if(executeQuery.next()){
-                p = new Paciente(idpaciente, tipoid, executeQuery.getString(1),executeQuery.getDate(2));
-            }
+            int id=idpaciente;
+            String tipoId=tipoid;
+            String nombre="";
+            Date fecha=null;
             Set<Consulta> lista = new HashSet<>();
             while(executeQuery.next()){
+                nombre=executeQuery.getString(1);
+                fecha=executeQuery.getDate(2);
                 Consulta c = new Consulta(executeQuery.getDate(4), executeQuery.getString(5));
-                lista.add(c);
+                c.setId(executeQuery.getInt(3));
+                if(c.getFechayHora()!=null&&c.getResumen()!=null)lista.add(c);
             }
+            p= new Paciente(id, tipoId, nombre, fecha);
             p.setConsultas(lista);
             return p;
         } catch (SQLException ex) {
@@ -80,23 +85,30 @@ public class JDBCDaoPaciente implements DaoPaciente {
     @Override
     public void save(Paciente p) throws PersistenceException {
         try {
+            PreparedStatement ps = null;
             con.setAutoCommit(false);
-            String consulta = "INSERT INTO PACIENTES VALUES (?,?,?,?)";
-            PreparedStatement ps = con.prepareCall(consulta);
-            ps.setInt(1,p.getId());
-            ps.setString(2, p.getTipo_id());
-            ps.setString(3, p.getNombre());
-            ps.setDate(4, p.getFechaNacimiento());
+            String consulta = "INSERT INTO PACIENTES VALUES ( "+ p.getId()+", '"+p.getTipo_id()+"', ?, ?)";
+            //System.out.println(consulta);
+            ps = con.prepareCall(consulta);
+            //ps.setInt(1,p.getId());
+            //ps.setString(2, p.getTipo_id());
+            ps.setString(1, p.getNombre());
+            ps.setDate(2, p.getFechaNacimiento());
             int res= ps.executeUpdate();
+        }catch (SQLException e) {
+            
+        }
+        try{
+            PreparedStatement ps = null;
             for (Consulta c : p.getConsultas()) {
-                consulta ="INSERT INTO CONSULTAS VALUES (?,?,?,?,?)";
+                String consulta ="INSERT INTO CONSULTAS VALUES (?,?,?,?,?)";
                 ps = con.prepareCall(consulta);
                 ps.setInt(1,c.getId());
                 ps.setDate(2,c.getFechayHora());
                 ps.setString(3,c.getResumen());
                 ps.setInt(4,p.getId());
                 ps.setString(5,p.getTipo_id());
-                res = ps.executeUpdate();
+                int res = ps.executeUpdate();
             }
         } catch (SQLException e){
             e.printStackTrace();

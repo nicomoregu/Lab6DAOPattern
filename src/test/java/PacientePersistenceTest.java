@@ -68,10 +68,10 @@ public class PacientePersistenceTest {
         DaoFactory daof=DaoFactory.getInstance(properties);
         try{
             daof.beginSession();
-            Paciente p = new Paciente(1020795088, "CC", "nicolas", new Date(2016, 7, 21));
-            Consulta c = new Consulta(new Date(2016, 8, 19), "Prueba");
-            Consulta c1 = new Consulta(new Date(2016, 8, 19), "otra consulta");
-            Consulta c2 = new Consulta(new Date(2016, 8, 19), "mas consultas");
+            Paciente p = new Paciente(1020795088, "CC", "nicolas", java.sql.Date.valueOf("2016-07-21"));
+            Consulta c = new Consulta(java.sql.Date.valueOf("2016-07-21"), "Prueba");
+            Consulta c1 = new Consulta(java.sql.Date.valueOf("2016-08-21"), "otra consulta");
+            Consulta c2 = new Consulta(java.sql.Date.valueOf("2016-09-21"), "mas consultas");
             Set<Consulta> lista = new HashSet<>();
             lista.add(c);
             lista.add(c1);
@@ -103,7 +103,7 @@ public class PacientePersistenceTest {
         DaoFactory daof=DaoFactory.getInstance(properties);
         try{
             daof.beginSession();
-            Paciente p = new Paciente(1020795087, "CC", "nicolas", new Date(2016, 7, 21));
+            Paciente p = new Paciente(1020795087, "CC", "nicolas", java.sql.Date.valueOf("2016-07-21"));
             DaoPaciente daoP= daof.getDaoPaciente();
             daoP.save(p);
             Paciente p2 = daoP.load(1020795087, "CC");
@@ -129,8 +129,8 @@ public class PacientePersistenceTest {
         DaoFactory daof=DaoFactory.getInstance(properties);
         try{
             daof.beginSession();
-            Paciente p = new Paciente(1020795086, "CC", "nicolas", new Date(2016, 7, 21));
-            Consulta c = new Consulta(new Date(2016, 8, 19), "Prueba");
+            Paciente p = new Paciente(1020795086, "CC", "nicolas", java.sql.Date.valueOf("2016-07-21"));
+            Consulta c = new Consulta(java.sql.Date.valueOf("2016-08-21"), "Prueba");
             c.setId(10000);
             Set<Consulta> lista = new HashSet<>();
             lista.add(c);
@@ -140,6 +140,7 @@ public class PacientePersistenceTest {
             Paciente p2 = daoP.load(1020795086, "CC");
             daof.commitTransaction();
             daof.endSession();
+            System.out.println(p.toString()+" "+p2.toString());
             Assert.assertEquals("Los pacientes no coinciden con la busqueda",p ,p2);
         }catch (Exception e){
             daof.commitTransaction();
@@ -161,8 +162,8 @@ public class PacientePersistenceTest {
         DaoFactory daof=DaoFactory.getInstance(properties);
         daof.beginSession();
         try{
-            Paciente p = new Paciente(1020795086, "CC", "nicolas", new Date(2016, 7, 21));
-            Consulta c = new Consulta(new Date(2016, 8, 19), "Prueba");
+            Paciente p = new Paciente(1020795086, "CC", "nicolas", java.sql.Date.valueOf("2016-07-21"));
+            Consulta c = new Consulta(java.sql.Date.valueOf("2016-07-21"), "Prueba");
             Set<Consulta> lista = new HashSet<>();
             lista.add(c);
             p.setConsultas(lista);
@@ -175,7 +176,7 @@ public class PacientePersistenceTest {
         }catch(PersistenceException e){
             daof.commitTransaction();
             daof.endSession();
-            Assert.assertFalse("Fallo al momento se hacer la consulta SQL",true);
+            Assert.assertFalse(false);
         }
     }
 }
