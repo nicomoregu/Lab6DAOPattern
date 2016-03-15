@@ -17,9 +17,7 @@
 
 import edu.eci.pdsw.samples.entities.Consulta;
 import edu.eci.pdsw.samples.entities.Paciente;
-import edu.eci.pdsw.samples.persistence.DaoFactory;
-import edu.eci.pdsw.samples.persistence.DaoPaciente;
-import edu.eci.pdsw.samples.persistence.PersistenceException;
+import edu.eci.pdsw.samples.persistence.*;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Date;
@@ -51,18 +49,11 @@ public class PacientePersistenceTest {
         input = ClassLoader.getSystemResourceAsStream("applicationconfig_test.properties");
         Properties properties=new Properties();
         properties.load(input);
-        
         DaoFactory daof=DaoFactory.getInstance(properties);
-        
         daof.beginSession();
         daof.commitTransaction();
         daof.endSession();
-        //IMPLEMENTACION DE LAS PRUEBAS
-        fail("Pruebas no implementadas");
-
-
-        daof.commitTransaction();
-        daof.endSession();        
+        Assert.assertTrue(true);        
     }
     */
     /**
@@ -75,22 +66,28 @@ public class PacientePersistenceTest {
         Properties properties=new Properties();
         properties.load(input);
         DaoFactory daof=DaoFactory.getInstance(properties);
-        daof.beginSession();
-        Paciente p = new Paciente(1020795088, "CC", "nicolas", new Date(2016, 7, 21));
-        Consulta c = new Consulta(new Date(2016, 8, 19), "Prueba");
-        Consulta c1 = new Consulta(new Date(2016, 8, 19), "otra consulta");
-        Consulta c2 = new Consulta(new Date(2016, 8, 19), "mas consultas");
-        Set<Consulta> lista = new HashSet<>();
-        lista.add(c);
-        lista.add(c1);
-        lista.add(c2);
-        p.setConsultas(lista);
-        DaoPaciente daoP= daof.getDaoPaciente();
-        daoP.save(p);
-        Paciente p2 = daoP.load(1020795088, "CC");
-        daof.commitTransaction();
-        daof.endSession();
-        Assert.assertEquals("Los pacientes no coinciden con la busqueda",p ,p2);
+        try{
+            daof.beginSession();
+            Paciente p = new Paciente(1020795088, "CC", "nicolas", new Date(2016, 7, 21));
+            Consulta c = new Consulta(new Date(2016, 8, 19), "Prueba");
+            Consulta c1 = new Consulta(new Date(2016, 8, 19), "otra consulta");
+            Consulta c2 = new Consulta(new Date(2016, 8, 19), "mas consultas");
+            Set<Consulta> lista = new HashSet<>();
+            lista.add(c);
+            lista.add(c1);
+            lista.add(c2);
+            p.setConsultas(lista);
+            DaoPaciente daoP= daof.getDaoPaciente();
+            daoP.save(p);
+            Paciente p2 = daoP.load(1020795088, "CC");
+            daof.commitTransaction();
+            daof.endSession();
+            Assert.assertEquals("Los pacientes no coinciden con la busqueda",p ,p2);
+        }catch (Exception e){
+            daof.commitTransaction();
+            daof.endSession();
+            Assert.assertFalse("Fallo al momento se hacer la consulta SQL",true);
+        }
     }
     
     /**
@@ -98,19 +95,26 @@ public class PacientePersistenceTest {
      */
     @Test
     public void pruebaPacienteNuevoSinConsultas() throws IOException, PersistenceException{
+        
         InputStream input = null;
         input = ClassLoader.getSystemResourceAsStream("applicationconfig_test.properties");
         Properties properties=new Properties();
         properties.load(input);
         DaoFactory daof=DaoFactory.getInstance(properties);
-        daof.beginSession();
-        Paciente p = new Paciente(1020795087, "CC", "nicolas", new Date(2016, 7, 21));
-        DaoPaciente daoP= daof.getDaoPaciente();
-        daoP.save(p);
-        Paciente p2 = daoP.load(1020795087, "CC");
-        daof.commitTransaction();
-        daof.endSession();
-        Assert.assertEquals("Los pacientes no coinciden con la busqueda",p ,p2);
+        try{
+            daof.beginSession();
+            Paciente p = new Paciente(1020795087, "CC", "nicolas", new Date(2016, 7, 21));
+            DaoPaciente daoP= daof.getDaoPaciente();
+            daoP.save(p);
+            Paciente p2 = daoP.load(1020795087, "CC");
+            daof.commitTransaction();
+            daof.endSession();
+            Assert.assertEquals("Los pacientes no coinciden con la busqueda",p ,p2);
+        }catch (Exception e){
+            daof.commitTransaction();
+            daof.endSession();
+            Assert.assertFalse("Fallo al momento se hacer la consulta SQL",true);
+        }
     }
     
     /**
@@ -123,18 +127,25 @@ public class PacientePersistenceTest {
         Properties properties=new Properties();
         properties.load(input);
         DaoFactory daof=DaoFactory.getInstance(properties);
-        daof.beginSession();
-        Paciente p = new Paciente(1020795086, "CC", "nicolas", new Date(2016, 7, 21));
-        Consulta c = new Consulta(new Date(2016, 8, 19), "Prueba");
-        Set<Consulta> lista = new HashSet<>();
-        lista.add(c);
-        p.setConsultas(lista);
-        DaoPaciente daoP= daof.getDaoPaciente();
-        daoP.save(p);
-        Paciente p2 = daoP.load(1020795086, "CC");
-        daof.commitTransaction();
-        daof.endSession();
-        Assert.assertEquals("Los pacientes no coinciden con la busqueda",p ,p2);
+        try{
+            daof.beginSession();
+            Paciente p = new Paciente(1020795086, "CC", "nicolas", new Date(2016, 7, 21));
+            Consulta c = new Consulta(new Date(2016, 8, 19), "Prueba");
+            c.setId(10000);
+            Set<Consulta> lista = new HashSet<>();
+            lista.add(c);
+            p.setConsultas(lista);
+            DaoPaciente daoP= daof.getDaoPaciente();
+            daoP.save(p);
+            Paciente p2 = daoP.load(1020795086, "CC");
+            daof.commitTransaction();
+            daof.endSession();
+            Assert.assertEquals("Los pacientes no coinciden con la busqueda",p ,p2);
+        }catch (Exception e){
+            daof.commitTransaction();
+            daof.endSession();
+            Assert.assertFalse("Fallo al momento se hacer la consulta SQL",true);
+        }
     }
     
     
@@ -164,7 +175,7 @@ public class PacientePersistenceTest {
         }catch(PersistenceException e){
             daof.commitTransaction();
             daof.endSession();
-            Assert.assertTrue(true);
+            Assert.assertFalse("Fallo al momento se hacer la consulta SQL",true);
         }
     }
 }

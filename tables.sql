@@ -1,5 +1,5 @@
 
-CREATE TABLE `PACIENTES` (
+CREATE TABLE PACIENTES (
   `id` int(11) NOT NULL,
   `tipo_id` varchar(2),
   `nombre` varchar(45) NOT NULL,
