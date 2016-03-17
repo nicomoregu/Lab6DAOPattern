@@ -17,12 +17,44 @@
 package edu.eci.pdsw.samples.entities;
 
 import java.sql.Date;
+import java.util.Objects;
 
 /**
  *
  * @author hcadavid
  */
 public class Consulta {
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 11 * hash + this.id;
+        hash = 11 * hash + Objects.hashCode(this.fechayHora);
+        hash = 11 * hash + Objects.hashCode(this.resumen);
+        return hash;
+    }
+
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Consulta other = (Consulta) obj;
+        if (!Objects.equals(this.resumen, other.resumen)) {
+            return false;
+        }
+        if (!Objects.equals(this.fechayHora, other.fechayHora)) {
+            return false;
+        }
+        return true;
+    }
     //el identificador es asignado por la base de datos,
     //por eso no se incluye en el constructor.
     private int id;

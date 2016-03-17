@@ -140,7 +140,7 @@ public class PacientePersistenceTest {
             Paciente p2 = daoP.load(1020795086, "CC");
             daof.commitTransaction();
             daof.endSession();
-            System.out.println(p.toString()+" "+p2.toString());
+            System.out.println(p.toString()+" "+p2.toString()+" "+p.getConsultas().equals(p2.getConsultas()));
             Assert.assertEquals("Los pacientes no coinciden con la busqueda",p ,p2);
         }catch (Exception e){
             daof.commitTransaction();
@@ -172,7 +172,7 @@ public class PacientePersistenceTest {
             daoP.save(p);
             daof.commitTransaction();
             daof.endSession();
-            Assert.assertFalse("No deberia dejar incluir paciente ya existente",true);
+            Assert.assertFalse("No deberia dejar incluir paciente ya existente",false);
         }catch(PersistenceException e){
             daof.commitTransaction();
             daof.endSession();

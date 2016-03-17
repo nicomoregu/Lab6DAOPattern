@@ -101,13 +101,12 @@ public class JDBCDaoPaciente implements DaoPaciente {
         try{
             PreparedStatement ps = null;
             for (Consulta c : p.getConsultas()) {
-                String consulta ="INSERT INTO CONSULTAS VALUES (?,?,?,?,?)";
+                String consulta ="INSERT INTO CONSULTAS (fecha_y_hora,resumen,PACIENTES_id,PACIENTES_tipo_id)VALUES (?,?,?,?)";
                 ps = con.prepareCall(consulta);
-                ps.setInt(1,c.getId());
-                ps.setDate(2,c.getFechayHora());
-                ps.setString(3,c.getResumen());
-                ps.setInt(4,p.getId());
-                ps.setString(5,p.getTipo_id());
+                ps.setDate(1,c.getFechayHora());
+                ps.setString(2,c.getResumen());
+                ps.setInt(3,p.getId());
+                ps.setString(4,p.getTipo_id());
                 int res = ps.executeUpdate();
             }
         } catch (SQLException e){

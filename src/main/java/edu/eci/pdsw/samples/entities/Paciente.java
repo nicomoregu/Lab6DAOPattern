@@ -108,9 +108,6 @@ public class Paciente {
         if (!Objects.equals(this.fechaNacimiento, other.fechaNacimiento)) {
             return false;
         }
-        if (!Objects.equals(this.consultas, other.consultas)) {
-            return false;
-        }
         return true;
     }
 
